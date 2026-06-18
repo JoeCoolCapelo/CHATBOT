@@ -1,104 +1,121 @@
 # InternTrack AI 🤖🎓
 
-InternTrack AI est une plateforme moderne de gestion de stages universitaires, conçue pour faciliter le suivi entre les étudiants, les enseignants référents et l'administration. Elle intègre un assistant intelligent (**InternBot**) capable de guider les étudiants et les enseignants en temps réel.
-
-## 🌟 Fonctionnalités Principales
-
-- **Gestion des dossiers de stage** : Soumission, validation et suivi de l'état d'avancement des conventions de stage.
-- **Dépôt de documents** : Les étudiants peuvent uploader leurs documents (conventions, attestations) avec des titres personnalisés.
-- **Tableaux de bord dédiés** : Interfaces distinctes pour les Étudiants, les Enseignants et les Administrateurs.
-- **InternBot (Chatbot IA)** : Assistant virtuel intégré propulsé par l'IA (Google Gemini) avec mode de secours local, capable de répondre aux questions contextuelles selon le profil de l'utilisateur.
-- **Notifications en temps réel** : Suivi des événements importants et changements de statut.
-
-## 🛠️ Technologies Utilisées
-
-Ce projet est séparé en deux environnements distincts :
-
-### Frontend (`/interntrack-react`)
-- **React.js** (via Vite)
-- **TypeScript**
-- **Tailwind CSS** (pour un design moderne et responsif)
-- **Zustand** (gestion d'état)
-- **React Router** (navigation)
-
-### Backend (`/interntrack-django`)
-- **Python / Django**
-- **Django REST Framework (DRF)**
-- **SQLite** (base de données par défaut)
-- **JWT (JSON Web Tokens)** pour l'authentification
-- **Google Generative AI** (pour le moteur du chatbot)
+InternTrack AI est une plateforme web intelligente de gestion et de suivi des stages académiques, dotée d'un chatbot à intelligence artificielle intégré.
 
 ---
 
-## 🚀 Installation et Lancement en Local
+## 1. Présentation Générale du Projet
 
-### 1. Cloner le dépôt
+### Contexte et Problématique
+Dans la majorité des établissements d'enseignement supérieur, la gestion administrative des stages demeure tributaire de processus manuels, fragmentés et chronophages. Les étudiants sont contraints de transmettre physiquement leurs dossiers et de naviguer dans un système peu lisible, tandis que les enseignants référents croulent sous les demandes ponctuelles sans outils centralisés.
+Les principaux dysfonctionnements identifiés sont :
+- Absence de centralisation des données.
+- Manque de traçabilité des dossiers.
+- Dépassements des délais de validation.
+- Charge administrative élevée pour les secrétariats.
+
+### La Solution : InternTrack AI
+InternTrack AI est une application web fullstack de nouvelle génération qui digitalise l'intégralité du processus de gestion des stages. Elle combine une interface utilisateur moderne et réactive (React), une API REST robuste (Django) et un chatbot conversationnel (InternBot) capable d'assister les utilisateurs 24h/24.
+
+---
+
+## 2. Cahier des Charges & Fonctionnalités
+
+### Acteurs du Système
+- **Étudiant** : Soumet son dossier de stage, dépose des documents, suit l'avancement de sa convention et interagit avec le chatbot pour obtenir de l'aide.
+- **Enseignant Référent** : Consulte les dossiers de ses étudiants, télécharge les documents, valide ou rejette les demandes avec un commentaire.
+- **Administrateur** : Supervise l'ensemble de la plateforme et gère les utilisateurs.
+
+### Besoins Fonctionnels Clés
+1. **Module Authentification** : Inscription sécurisée, connexion par JWT.
+2. **Module Stage & Documents** : Formulaire de déclaration, upload sécurisé de fichiers, suivi d'état (Brouillon, Soumis, Validé, Rejeté).
+3. **Module Chatbot IA** : Assistant virtuel intégré propulsé par l'IA avec connaissance contextuelle du dossier de l'étudiant.
+4. **Système de Notifications** : Suivi des événements importants et changements de statuts en temps réel.
+
+---
+
+## 3. Architecture Technique et Choix de Conception
+
+Le projet repose sur une architecture découplée (Séparation Client/Serveur) garantissant sécurité, maintenabilité et évolutivité.
+
+### Frontend (Client)
+- **Framework** : React.js via Vite pour un build ultra-rapide.
+- **Langage** : TypeScript pour le typage statique strict.
+- **Style** : Tailwind CSS pour un design system "Atomic" et une UX premium (Support Dark/Light mode).
+- **State Management** : Zustand pour une gestion d'état globale légère.
+- **Routage** : React Router DOM.
+
+### Backend (Serveur API)
+- **Framework** : Python / Django.
+- **API REST** : Django REST Framework (DRF) pour la création d'endpoints scalables.
+- **Authentification** : `djangorestframework-simplejwt` pour la gestion des tokens sécurisés.
+- **Base de données** : SQLite (par défaut pour le développement) évolutif vers PostgreSQL en production.
+- **Intelligence Artificielle** : Intégration de l'API Google Gemini (modèle `gemini-1.5-flash` / `gemini-flash-latest`) avec Streaming SSE (Server-Sent Events).
+
+---
+
+## 4. Installation et Déploiement en Local
+
+### Prérequis
+- Node.js (v18+)
+- Python (3.10+)
+- Git
+
+### Étape 1 : Cloner le dépôt
 ```bash
 git clone https://github.com/JoeCoolCapelo/CHATBOT.git
 cd CHATBOT
 ```
 
-### 2. Configuration du Backend (Django)
-
-Ouvrez un terminal et naviguez dans le dossier du backend :
+### Étape 2 : Configuration du Backend (Django)
 ```bash
 cd interntrack-django
-```
 
-Créez un environnement virtuel et installez les dépendances :
-```bash
+# Créer et activer l'environnement virtuel
 python -m venv venv
-# Activation sous Windows :
-venv\Scripts\activate
-# (Activation sous Mac/Linux : source venv/bin/activate)
+# Windows : venv\Scripts\activate
+# Mac/Linux : source venv/bin/activate
 
+# Installer les dépendances
 pip install -r requirements.txt
-```
 
-Appliquez les migrations de la base de données :
-```bash
+# Appliquer les migrations de base de données
 python manage.py migrate
-```
 
-Lancer le serveur de développement :
-```bash
+# Démarrer le serveur
 python manage.py runserver 8001
 ```
-Le backend sera accessible sur `http://127.0.0.1:8001`.
+Le backend tourne sur `http://127.0.0.1:8001`.
 
-### 3. Configuration du Frontend (React)
-
-Ouvrez un **nouveau terminal** et naviguez dans le dossier du frontend :
+### Étape 3 : Configuration du Frontend (React)
+Dans un nouveau terminal :
 ```bash
 cd interntrack-react
-```
 
-Installez les paquets NPM :
-```bash
+# Installer les paquets
 npm install
-```
 
-Lancer le serveur de développement Vite :
-```bash
+# Lancer le serveur de développement
 npm run dev
 ```
-Le frontend sera accessible (généralement) sur `http://localhost:5173`.
+Le frontend est accessible sur `http://localhost:5173`.
+
+### Configuration de l'IA (InternBot)
+Pour activer le chatbot IA :
+1. Dans `interntrack-django/api/views.py`, localisez la variable `GEMINI_API_KEY`.
+2. Insérez votre clé API Google Gemini.
+> **Note :** Si la clé est invalide ou que votre quota est atteint, le système bascule intelligemment sur un **Fallback local** garantissant que l'utilisateur reçoit toujours une réponse instantanée.
 
 ---
 
-## 🔑 Configuration du Chatbot IA (Optionnel)
-
-Si vous possédez une clé API Google Gemini valide :
-1. Ouvrez le fichier `interntrack-django/api/views.py`.
-2. Cherchez la variable `GEMINI_API_KEY`.
-3. Insérez votre clé API entre les guillemets : `GEMINI_API_KEY = "votre_clé_ici"`.
-
-> **Note :** Si la clé est vide ou que le quota est dépassé, le système basculera automatiquement sur un mode "Fallback local" très rapide, capable de répondre aux questions basiques sur l'état du stage de l'utilisateur.
+## 5. Évolutions Futures & Roadmap
+- **Court Terme** : Notifications push, signature électronique des conventions intégrée.
+- **Moyen Terme** : Analyse automatique des rapports de stage par IA (détection de plagiats, évaluation de qualité).
+- **Long Terme** : Transformation en plateforme SaaS multi-tenant pour le déploiement sur plusieurs campus universitaires simultanément.
 
 ---
 
-## 🤝 Contribution
-Toute contribution au projet est la bienvenue. N'hésitez pas à ouvrir des *Issues* ou soumettre des *Pull Requests*.
+## 6. Conclusion
+InternTrack AI représente une vision nouvelle de la relation entre l'université et le monde professionnel, médiatisée par la technologie. En digitalisant, centralisant et "intelligentisant" le suivi des stages, la plateforme libère les acteurs académiques des contraintes bureaucratiques pour leur permettre de se concentrer sur l'essentiel : l'accompagnement pédagogique de qualité.
 
-## 📄 Licence
-Ce projet est développé dans le cadre d'un suivi académique.
+Les choix technologiques (React, Django, API IA Gérérative) positionnent InternTrack AI sur un socle moderne, démontrant la maîtrise des technologies fullstack et constituant une excellente fondation pour l'avenir de la gestion universitaire (GovTech / EdTech).
